@@ -1,9 +1,9 @@
 ## 4.1 Named Entity Recognition (NER)
 
-from .. import Sentence
+from .. import sentence
 import nltk
 
-sent = Sentence(1203)
+sent = sentence(1203)
 # print(sent.sentence, "\n")
 # print(sent.pos, "\n")
 

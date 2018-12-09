@@ -10,8 +10,6 @@
 # download directory: /usr/local/share/nltk_data
 # download what you will need
 
-import pickle
-
 import task2
 import task3_1
 import task3_3
@@ -19,17 +17,16 @@ import task3_2
 import task3_4
 import task3_5
 
+import pickle_utils as pu
+from sentence import Sentence
+
 # load corpus
 corpus = task2._load_corpus("../data/corpus.txt")
 
 ## 3.1
 sentences, words_all = task3_1._task3_1(corpus)
-
-with open(r'../pickle/sentences.pickle', 'wb') as output:
-    pickle.dump(sentences, output)
-
-with open(r'../pickle/words_all.pickle', 'wb') as output:
-    pickle.dump(words_all, output)
+pu._set_sentences(sentences)
+pu._set_words_all(words_all)
 
 # TEST
 # print("sentences")
@@ -40,18 +37,14 @@ with open(r'../pickle/words_all.pickle', 'wb') as output:
 
 ## 3.3
 pos_tags_all = task3_3._pos_tag(words_all)
-
-with open(r'../pickle/pos_tags_all.pickle', 'wb') as output:
-    pickle.dump(pos_tags_all, output)
+pu._set_pos_tags_all(pos_tags_all)
 
 # TEST
 # print("pos_tags_all")
 # print(pos_tags_all[1:2])
 
 wn_tags_all = task3_3._wn_tag(pos_tags_all)
-
-with open(r'../pickle/wn_tags_all.pickle', 'wb') as output:
-    pickle.dump(wn_tags_all, output)
+pu._set_wn_tags_all(wn_tags_all)
 
 # TEST
 # print("wn_tags_all")
@@ -59,9 +52,7 @@ with open(r'../pickle/wn_tags_all.pickle', 'wb') as output:
 
 ## 3.2
 lemmas_all = task3_2._lemmatize(words_all, wn_tags_all)
-
-with open(r'../pickle/lemmas_all.pickle', 'wb') as output:
-    pickle.dump(lemmas_all, output)
+pu._set_lemmas_all(lemmas_all)
 
 # TEST
 # print("lemmas_all")
@@ -96,3 +87,10 @@ with open(r'../pickle/lemmas_all.pickle', 'wb') as output:
 # print("hyponyms:", hyponyms, "\n")
 # print("meronyms(being a member of):", meronyms, "\n")
 # print("holonyms(having members of):", holonyms, "\n")
+
+sents = []
+for i, sentence in enumerate(sentences):
+    sent = Sentence(i, sentence, words_all[i], pos_tags_all[i], lemmas_all[i])
+    sents.append(sent)
+
+pu._set_sents(sents)

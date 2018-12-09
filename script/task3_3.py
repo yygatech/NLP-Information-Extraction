@@ -20,7 +20,6 @@ def _pos_tag(words_all):
         pos_tags = pt(words)
         pos_tags_all[i] = pos_tags
 
-
     return pos_tags_all
 
 def _tag(pos_tags_all):

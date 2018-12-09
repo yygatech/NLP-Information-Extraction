@@ -6,8 +6,26 @@
 # chapter 5: Named Entity Recognition
 # chapter 6: Relation Extraction
 
-## 4.0
 
-# TEST
-from task4_utils import test
-test._test()
+# template 1: compose(verb, composer, music, at-time, at-loc)
+
+# template 2: sing(verb, singer, song, at-time, at-loc)
+
+# template 3: play an instrument(verb, player, instrument, at-time, at-loc)
+
+# template 4: invent/create(verb, inventor, invention, at-time, at-loc)
+
+# template 5: style?
+
+# template 6: titled/known as(verb, sb/sth, title)
+
+# template 7: publish(verb, author, publication, publisher/media, at-time, at-location)
+
+# template 8: influence(verb, influencer, affected, effect, degree/range)
+
+# template 9: give/gain(verb, giver, gainer, item, currency, quantity, at-time, at-location)
+
+# template 10: study(verb, sb, sth, at-time, at-loc)
+
+# candidates: visit, reside, utilize, work, possess, born, die
+
