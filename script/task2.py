@@ -1,5 +1,8 @@
 # task2.py
 
+# Link to corpus:
+# https://www.gutenberg.org/ebooks/20293
+
 # function: load corpus
 # arguments: corpus path
 # return: corpus loaded as a string

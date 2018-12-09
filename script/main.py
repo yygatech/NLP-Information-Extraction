@@ -15,7 +15,7 @@ def main():
     # (see in 'task3.py')
 
     # task 4
-    # TODO
+    # (see in 'task4.py')
 
 if __name__ == '__main__':
     main()
