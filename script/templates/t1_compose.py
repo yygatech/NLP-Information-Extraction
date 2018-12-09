@@ -33,7 +33,7 @@ keyword = "compose"
 
 ##################################
 # Step 1: filter sentences by verb
-sents = _filter_by_verb('compose.v.02')
+sents,keywords = _filter_by_verb('compose.v.02')
 print("number of filtered sentences:", len(sents))
 
 # get a list of filtered sentences
@@ -87,10 +87,16 @@ dtree = trees.dp
 netree = trees.ne
 
 print("print ctree:")
-ctree.pretty_print()
+# ctree.pretty_print()
 
 print("print dtree:")
-print(dtree.to_conll(4))
+# print(dtree.to_conll(4))
 
 print("print ner tree:")
-print(netree)
+# print(netree)
+
+import subject_dt
+print('key:', keywords)
+candidates = subject_dt.extractSubDT(sents, keywords)
+print(candidates)
+
