@@ -1,11 +1,12 @@
-import nltk
+from nltk.parse.corenlp import CoreNLPParser as CP
+from nltk.parse.corenlp import CoreNLPDependencyParser as DP
+from nltk import ne_chunk
 
 # parsed tree objects
 class Trees:
-    def __init__(self, i):
-        sentence = sentences[i]
+    def __init__(self, sentence, pos):
         parser = CP(url='http://localhost:9000')
         dep_parser = DP(url='http://localhost:9000')
         self.cp = next(parser.raw_parse(sentence))
         self.dp = next(dep_parser.raw_parse(sentence))
-        self.ne = nltk.ne_chunk(Sentence(i).pos)
+        self.ne = ne_chunk(pos)

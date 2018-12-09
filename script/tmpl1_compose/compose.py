@@ -7,13 +7,14 @@ import sys
 from script import sentence
 sys.modules['sentence'] = sentence
 
+keyword = "compose"
 ##################################
 # Step 0: select the right synset
 # from script.task3_5 import __synsets
 # from nltk.corpus import wordnet as wn
 #
 # # synsets of 'compose'
-# compose_synsets = __synsets('compose')
+# compose_synsets = __synsets(keyword)
 # for i, synset in enumerate(compose_synsets):
 #     definition = synset.definition().lower()
 #     examples = synset.examples()
@@ -32,13 +33,64 @@ sys.modules['sentence'] = sentence
 
 ##################################
 # Step 1: filter sentences by verb
-sent_dict = _filter_by_verb('compose.v.02')
-print("number of filtered sentences:", len(sent_dict))
+sents = _filter_by_verb('compose.v.02')
+print("number of filtered sentences:", len(sents))
 
-# PRINT
-# for sent_idx in sent_dict:
-#     sent = sent_dict[sent_idx]
-#     print(sent_idx, sent.sentence)
+# get a list of filtered sentences
+sentences = []
+pos_tags = []
+for i, sent in enumerate(sents):
+    sentences.append(sent.sentence)
+    pos_tags.append(sent.pos)
+    # print(i, ":", sent.sentence)
+    # print("pos tag:", sent.pos)
 
 ##################################
-# Step 2:
+# Step 2: get or wrap trees if trees not exist
+
+from script.trees import Trees
+
+##################
+# this section doesn't work!
+# error: AttributeError: Can't pickle local object 'DependencyGraph.__init__.<locals>.<lambda>'
+# from pathlib import Path
+# from script import pickle_utils as pu
+# pickled = Path("pickle/" + keyword + "_groves.pickle")
+# if pickled.is_file():
+#     print("file exists")
+# else:
+#     print("file not exists")
+#
+#     # pickle groves
+#     # groves = []
+#     # for i, sentence in enumerate(sentences[:10]):
+#     #     print("start parsing sentence:", i)
+#     #     trees = Trees(sentence, pos_tags[i])
+#     #     groves.append(trees)
+#     #     print("finish parsing sentence:", i)
+#     # pu._set_groves(keyword, groves)
+#     # print("finish pickling")
+#
+# # unpickle groves
+# groves = pu._get_groves(keyword)
+# print("length of groves", len(groves))
+##################
+
+# sample
+idx = 1
+sentence = sentences[1]
+pos_tag = pos_tags[1]
+
+trees = Trees(sentence, pos_tag)
+ctree = trees.cp
+dtree = trees.dp
+netree = trees.ne
+
+print("print ctree:")
+ctree.pretty_print()
+
+print("print dtree:")
+print(dtree.to_conll(4))
+
+print("print ner tree:")
+print(netree)

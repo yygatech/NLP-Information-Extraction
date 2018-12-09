@@ -46,6 +46,13 @@ pu._set_pos_tags_all(pos_tags_all)
 # print("pos_tags_all")
 # print(pos_tags_all[1:2])
 
+tags_all = task3_3._tag(pos_tags_all)
+pu._set_tags_all(tags_all)
+
+# TEST
+# print("tags_all")
+# print(tags_all[1:2])
+
 wn_tags_all = task3_3._wn_tag(pos_tags_all)
 pu._set_wn_tags_all(wn_tags_all)
 
@@ -66,7 +73,7 @@ pu._set_lemmas_all(lemmas_all)
 # wrap above all in sents
 sents = []
 for i, sentence in enumerate(sentences):
-    sent = Sentence(i, sentence, words_all[i], pos_tags_all[i], lemmas_all[i])
+    sent = Sentence(i, sentence, words_all[i], pos_tags_all[i], tags_all[i], lemmas_all[i])
     sents.append(sent)
 pu._set_sents(sents)
 

@@ -19,14 +19,14 @@ def _filter_by_verb(synset):
 
     # extract sentences that contain the 'synset' verb
     sents = pickle_utils._get_sents()
-    sent_dict = {}
+    filtered_sents = []
     for i, sent in enumerate(sents):
         for synset_synonym in synset_synonyms:
             if synset_synonym in sent.lemmas:
-                sent_dict[i] = sent
+                filtered_sents.append(sent)
                 break
     # print("number of sentences containing", synset, ":", len(sent_inds))
-    return sent_dict
+    return filtered_sents
 
 # TEST
 # synset = 'compose.v.02'

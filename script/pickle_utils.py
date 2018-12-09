@@ -1,4 +1,5 @@
 import pickle
+import dill
 import sys
 
 pickle_dir = sys.path[1] + "/pickle/"
@@ -33,6 +34,16 @@ def _get_pos_tags_all():
         pos_tags_all = pickle.load(input)
     return pos_tags_all
 
+# tags_all setter and getter
+def _set_tags_all(tags_all):
+    with open(pickle_dir + "tags_all.pickle", 'wb') as output:
+        pickle.dump(tags_all, output)
+
+def _get_tags_all():
+    with open(pickle_dir + "tags_all.pickle", 'rb') as input:
+        tags_all = pickle.load(input)
+    return tags_all
+
 # wn_tags_all setter and getter
 def _set_wn_tags_all(wn_tags_all):
     with open(pickle_dir + "wn_tags_all.pickle", 'wb') as output:
@@ -62,3 +73,13 @@ def _get_sents():
     with open(pickle_dir + "sents.pickle", 'rb') as input:
         sents = pickle.load(input)
     return sents
+
+# groves setter and getter for a specific keyword
+def _set_groves(keyword, groves):
+    with open(pickle_dir + keyword + "_groves.pickle", 'wb') as output:
+        pickle.dump(groves, output)
+
+def _get_groves(keyword):
+    with open(pickle_dir + keyword + "_groves.pickle", 'rb') as input:
+        groves = pickle.load(input)
+    return groves
