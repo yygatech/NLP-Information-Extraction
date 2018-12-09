@@ -26,7 +26,7 @@ def _filter_by_verb(synset):
                 filtered_sents.append(sent)
                 break
     # print("number of sentences containing", synset, ":", len(sent_inds))
-    return filtered_sents,synset_synonyms
+    return filtered_sents,synset
 
 # TEST
 # synset = 'compose.v.02'
