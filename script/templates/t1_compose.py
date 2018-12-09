@@ -1,5 +1,7 @@
 # Template 1: compose(composer, verb, music, at-time, at-loc)
 
+from nltk.corpus import wordnet as wn
+
 from script.task4_utils.filter_by_verb import _filter_by_verb
 
 # This is important to unpickle class Sentence.
@@ -7,33 +9,14 @@ import sys
 from script import sentence
 sys.modules['sentence'] = sentence
 
-keyword = "compose"
 ##################################
-# Step 0: select the right synset
-# from script.task3_5 import __synsets
-# from nltk.corpus import wordnet as wn
-#
-# # synsets of 'compose'
-# compose_synsets = __synsets(keyword)
-# for i, synset in enumerate(compose_synsets):
-#     definition = synset.definition().lower()
-#     examples = synset.examples()
-#
-#     print(synset)
-#     print("definition:", definition)
-#     print("examples:", examples)
-#     print()
-#
-# # selected synset is 'compose.v.02'
-# compose_synset = wn.synset('compose.v.02')
-# print("selected synset:", compose_synset)
-#
-# compose_synonyms = compose_synset.lemma_names()
-# print("synonyms:", compose_synonyms)
+keyword = "compose"
+synset_str = "compose.v.02"
+synset = wn.synset(synset_str)
 
 ##################################
 # Step 1: filter sentences by verb
-sents = _filter_by_verb('compose.v.02')
+sents = _filter_by_verb(synset_str)
 print("number of filtered sentences:", len(sents))
 
 # get a list of filtered sentences
@@ -77,20 +60,26 @@ from script.trees import Trees
 ##################
 
 # sample
-idx = 1
-sentence = sentences[1]
-pos_tag = pos_tags[1]
+# idx = 1
+# sentence = sentences[1]
+# pos_tag = pos_tags[1]
+#
+# trees = Trees(sentence, pos_tag)
+# ctree = trees.cp
+# dtree = trees.dp
+# netree = trees.ne
+#
+# print("print ctree:")
+# ctree.pretty_print()
+#
+# print("print dtree:")
+# print(dtree.to_conll(4))
+#
+# print("print ner tree:")
+# print(netree)
 
-trees = Trees(sentence, pos_tag)
-ctree = trees.cp
-dtree = trees.dp
-netree = trees.ne
+######################################
+# find subject
+from script.templates import subject as sub
 
-print("print ctree:")
-ctree.pretty_print()
-
-print("print dtree:")
-print(dtree.to_conll(4))
-
-print("print ner tree:")
-print(netree)
+sub._subject(synset, sents[:10])

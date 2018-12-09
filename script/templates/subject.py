@@ -1,28 +1,25 @@
-### 4.3.3 extract subject
+### extract subject
+from script.trees import Trees
+import nltk
 
 # function: get indices of a lemma
-def _get_indices_of_synsets(idx, compose_synonyms):
-    res = []
-    sent = sents[idx]
-    #     print(sent.lemmas)
+def _get_indices_of_synsets(sent, compose_synonyms):
+    lemmas_inds = []
     for lemma_idx, lemma in enumerate(sent.lemmas):
         if lemma in compose_synonyms:
-            res.append(lemma_idx)
-    return res
+            lemmas_inds.append(lemma_idx)
+    return lemmas_inds
 
 
 # function: extract subject
-def _extract_subject(idx, lemma_idx):
-    sent = sents[idx]
-    print("#", idx, sent.sentence, "\n")
-
+def _extract_subject(sent, lemma_idx):
     verb = sent.tokens[lemma_idx]
-    print("verb:", verb, "\n")
+    print("verb at", lemma_idx, ":", verb)
 
-    #     pos = sent.pos
-    #     print("pos:", pos, "\n")
+    pos = sent.pos
+    print("pos:", pos)
 
-    trees = Trees(idx)
+    trees = Trees(sent.sentence, pos)
     cp = trees.cp
     #     dp = trees.dp
     #     ne = trees.ne
@@ -34,17 +31,18 @@ def _extract_subject(idx, lemma_idx):
     ptree = nltk.tree.ParentedTree.convert(cp)
     #     print("parented tree:", ptree)
 
-    leaf_values = ptree.leaves()
+    # leaf_values = ptree.leaves()
     #     print(leaf_values)
 
+    # get path(list of indices) to the lemma node
     tree_location = ptree.leaf_treeposition(lemma_idx)
     #     print("tree location:", tree_location)
 
+    # walk to the lemma node
     node = ptree
     for i in tree_location[:-1]:
         node = node[i]
     #     print("node:", node)
-    lemma_node = node
 
     subject = ""
 
@@ -87,25 +85,27 @@ def _extract_subject(idx, lemma_idx):
         return ""
     else:
         return subject.flatten()
-
     print()
 
+# display subjects of sentences given a synset
+def _subject(synset, sents):
+    synonyms = synset.lemma_names()
+    print("synonyms:", synonyms)
 
-##################################
+    for i, sent in enumerate(sents):
+        print(i, ":", sent.sentence)
 
-selected_inds = range(20)
-for selected_idx in selected_inds:
-    idx = compose_inds[selected_idx]
-    lemma_inds = _get_indices_of_synsets(idx, compose_synonyms)
-    print("lemma_inds:", lemma_inds)
+        lemma_inds = _get_indices_of_synsets(sent, synonyms)
+        print("lemma_inds:", lemma_inds)
 
-    # may have more than one lemma_idx
-    for lemma_idx in lemma_inds:
-        subject = _extract_subject(idx, lemma_idx)
+        # may have more than one lemma_idx
+        # e.g. lemma_inds = [2, 5]
 
-        if subject == "":
-            print("no subject found")
-        else:
-            print(subject)
+        for lemma_idx in lemma_inds:
+            subject = _extract_subject(sent, lemma_idx)
 
+            if subject == "":
+                print("no subject found")
+            else:
+                print("subject found:", subject)
         print()

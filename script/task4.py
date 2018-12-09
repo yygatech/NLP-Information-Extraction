@@ -6,6 +6,18 @@
 # chapter 5: Named Entity Recognition
 # chapter 6: Relation Extraction
 
+# Step 1: preprocessing
+# keywords -> candidate synsets
+from script.task4_utils.select_synset import _display_synsets
+
+keywords = ["compose", "sing", "play", "invent", "title", "publish", "influence", "study", "visit", "born", "die"]
+for i, keyword in enumerate(keywords):
+    _display_synsets(keyword)
+
+# choose the target synset
+synsets = {}
+synset["compose"] = ""
+
 
 # template 1: compose(verb, composer, music, at-time, at-loc)
 
