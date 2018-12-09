@@ -32,7 +32,6 @@ def _dependency_parse(sentences):
     parse = dep_parser.raw_parse_sents(sentences)
 
     dep_trees = []
-    # show parsed results:
     for itr_tree in parse:
         for tree in itr_tree:
             dep_trees.append(tree)
@@ -54,10 +53,9 @@ def _parse(sentences):
     # print(parse.pretty_print())
 
     parse = parser.raw_parse_sents(sentences)
-    print(sentences[5:6])
+    # print(sentences[5:6])
 
     parse_trees = []
-    # show parsed results:
     for itr_tree in parse:
         for tree in itr_tree:
             parse_trees.append(tree)
