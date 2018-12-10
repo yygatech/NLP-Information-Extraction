@@ -21,6 +21,32 @@ synset_str = "compose.v.02"
 sents, synset = _filter_by_verb(synset_str)
 print("number of filtered sentences:", len(sents))
 
+
+# filter those preceed 'of'
+def _filter_of(sents):
+    from script.task4_utils.get_tree_lemmas import _get_tree_lemmas
+    from script.templates.subject import _get_indices_of_synsets
+
+    synonyms = synset.lemma_names()
+    # print("synonyms:", synonyms)
+
+    filtered = []
+    for sent in sents:
+
+        # get tree lemmas
+        lemmas = _get_tree_lemmas(sent)
+        lemma_inds = _get_indices_of_synsets(lemmas, synonyms)
+        for lemma_ind in lemma_inds:
+            curr_word = lemmas[lemma_ind]
+            next_word = lemmas[lemma_ind + 1]
+            if next_word != "of":
+                filtered.append(sent)
+                break
+    return filtered
+
+# sents = _filter_of(sents)
+# print("number of 2nd-round filtered sentences:", len(sents))
+
 # pickle keyword sents if never pickled
 sents_pickle = _pickle_keyword_sents_if_not(keyword, sents)
 print("Create sents pickle:", sents_pickle)
@@ -58,24 +84,37 @@ print("Create sents pickle:", sents_pickle)
 ######################################
 # Step 2: find subject and object
 from script.templates import subject as sub
-subjects_all = sub._subject(synset, sents[:10])
+selected_sents = sents[50:60]
+subjects_all = sub._subject(synset, selected_sents)
 
 # TEST PRINT
 # for subjects in subjects_all:
 #     print(subjects)
 
-objects_all = sub._object(synset, sents[:10])
+objects_all = sub._object(synset, selected_sents)
 
 # TEST PRINT
 # for objects in objects_all:
 #     print(objects)
 
+# form triples: v(e1, x1, x2)
+for i, sent in enumerate(selected_sents):
+    subjects = subjects_all[i]
+    objects = objects_all[i]
+
+    x1, e1, x2 = sub._triple(synset, sent, subjects, objects)
+    print()
+    print(i, "sentence:", sent.sentence)
+    print("e1:", e1)
+    print("x1:", x1)
+    print("x2:", x2)
+
 #### Person and Location
-from script.templates import entity
-persons = entity.extractEnt(sents, 'PERSON')
-print('Person:', persons)
-locations = entity.extractEnt(sents, 'GPE')
-print('Location:', locations)
+# from script.templates import entity
+# persons = entity.extractEnt(sents, 'PERSON')
+# print('Person:', persons)
+# locations = entity.extractEnt(sents, 'GPE')
+# print('Location:', locations)
 
 ######################################
 # Step 3: extract temporal information

@@ -10,10 +10,10 @@ from script import pickle_utils
 # function: filter sentences by verb snyset
 # parameter: verb synset as a string
 # return: a dictionary each entry of which contains an index (key) and a sent class (value)
-def _filter_by_verb(synset):
+def _filter_by_verb(synset_str):
 
     # get all synonyms of the query synset
-    synset = wn.synset(synset)
+    synset = wn.synset(synset_str)
     synset_synonyms = synset.lemma_names()
     print("synset_synonyms:", synset_synonyms)
 
@@ -26,7 +26,7 @@ def _filter_by_verb(synset):
                 filtered_sents.append(sent)
                 break
     # print("number of sentences containing", synset, ":", len(sent_inds))
-    return filtered_sents,synset
+    return filtered_sents, synset
 
 # TEST
 # synset = 'compose.v.02'
