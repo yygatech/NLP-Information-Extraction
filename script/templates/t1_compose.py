@@ -4,6 +4,7 @@ from nltk.corpus import wordnet as wn
 
 from script.task4_utils.filter_by_verb import _filter_by_verb
 from script.task4_utils.pickle_if_not import _pickle_keyword_sents_if_not
+from script.task4_utils import filter_by_verb as fs
 # from script.task4_utils.pickle_if_not import _pickle_keyword_groves_if_not
 
 # This is important to unpickle class Sentence.
@@ -15,10 +16,14 @@ sys.modules['sentence'] = sentence
 keyword = "compose"
 synset_str = "compose.v.02"
 
+excludes = ['write']
+synwords = fs.getCandidateWords(synset_str, excludes)
+print('target verbs:', synwords)
+
 ##################################
 # Step 1: filter sentences by verb
 
-sents, synset = _filter_by_verb(synset_str)
+sents = _filter_by_verb(synwords)
 print("number of filtered sentences:", len(sents))
 
 # pickle keyword sents if never pickled
@@ -58,13 +63,13 @@ print("Create sents pickle:", sents_pickle)
 ######################################
 # Step 2: find subject and object
 from script.templates import subject as sub
-subjects_all = sub._subject(synset, sents[:10])
+subjects_all = sub._subject(synwords, sents[:10])
 
 # TEST PRINT
 # for subjects in subjects_all:
 #     print(subjects)
 
-objects_all = sub._object(synset, sents[:10])
+objects_all = sub._object(synwords, sents[:10])
 
 # TEST PRINT
 # for objects in objects_all:

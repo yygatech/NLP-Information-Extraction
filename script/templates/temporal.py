@@ -76,3 +76,6 @@ def _extract_static_time(sents):
         else:
             print("static time:", static_time)
         print()
+
+def getTimeInf(sents):
+    _extract_static_time(sents)

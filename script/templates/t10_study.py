@@ -2,7 +2,7 @@
 
 from nltk.corpus import wordnet as wn
 
-from script.task4_utils.filter_by_verb import _filter_by_verb
+from script.task4_utils import filter_by_verb as fs
 from script.task4_utils.pickle_if_not import _pickle_keyword_sents_if_not
 # from script.task4_utils.pickle_if_not import _pickle_keyword_groves_if_not
 
@@ -12,13 +12,16 @@ from script import sentence
 sys.modules['sentence'] = sentence
 
 ##################################
-keyword = "play"
-synset_str = "play.v.03"
+keyword = "study"
+synset_str = "learn.v.01"
+
+excludes = []
+synwords = fs.getCandidateWords(synset_str, excludes)
+print('synwords:', synwords)
 
 ##################################
 # Step 1: filter sentences by verb
-
-sents, synset = _filter_by_verb(synset_str)
+sents = fs._filter_by_verb(synwords)
 print("number of filtered sentences:", len(sents))
 
 # pickle keyword sents if never pickled
@@ -56,26 +59,33 @@ print("Create sents pickle:", sents_pickle)
 # # print(netree)
 
 ######################################
-# Step 2: find subject and object
+# # Step 2: find subject and object
 from script.templates import subject as sub
-subjects_all = sub._subject(synset, sents[:10])
-
-# TEST PRINT
-# for subjects in subjects_all:
-#     print(subjects)
-
-objects_all = sub._object(synset, sents[:10])
-
-# TEST PRINT
-for objects in objects_all:
-    print(objects)
+# subjects_all = sub._subject(synwords, sents[:10])
+#
+# # TEST PRINT
+# # for subjects in subjects_all:
+# #     print(subjects)
+#
+# objects_all = sub._object(synwords, sents[:10])
+#
+# # TEST PRINT
+# for objects in objects_all:
+#     print(objects)
 
 #### Person and Location
 from script.templates import entity
-persons = entity.extractEnt(sents, 'PERSON')
-print('Person:', persons)
-locations = entity.extractEnt(sents, 'GPE')
-print('Location:', locations)
+# persons = entity.extractEnt(sents, 'PERSON')
+# print('Person:', persons)
+# locations = entity.extractEnt(sents, ['GPE','GSP','PERSON','ORGANIZATION'])
+# print('Location:', locations)
+
+
+
+size = 20 # len(sents)
+from script.templates import geo
+tolocs = geo._getLocation(sents[10:size], synwords)
+print(tolocs)
 
 ######################################
 # Step 3: extract temporal information

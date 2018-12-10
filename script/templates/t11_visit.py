@@ -83,9 +83,17 @@ from script.templates import entity
 
 
 size = 10 # len(sents)
-from script.templates import toloc
-tolocs = toloc._toLocation(sents[:size], synwords)
-print(tolocs)
+
+### to Location
+# from script.templates import geo
+# tolocs = geo._toLocation(sents[:size], synwords)
+# print(tolocs)
+
+### Time
+from script.templates import temporal
+times = temporal.getTimeInf(sents[:size])
+print(times)
+
 
 
 ######################################
