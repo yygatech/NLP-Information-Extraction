@@ -1,4 +1,4 @@
-### extract subject
+# extract subject
 from script.trees import Trees
 import nltk
 
@@ -10,16 +10,13 @@ def _get_indices_of_synsets(sent, compose_synonyms):
             lemmas_inds.append(lemma_idx)
     return lemmas_inds
 
-
+######################################
 # function: extract subject
 def _extract_subject(sent, lemma_idx):
     verb = sent.tokens[lemma_idx]
-    print("verb at", lemma_idx, ":", verb)
+    # print("verb at", lemma_idx, ":", verb)
 
-    pos = sent.pos
-    print("pos:", pos)
-
-    trees = Trees(sent.sentence, pos)
+    trees = Trees(sent)
     cp = trees.cp
     #     dp = trees.dp
     #     ne = trees.ne
@@ -87,25 +84,66 @@ def _extract_subject(sent, lemma_idx):
         return subject.flatten()
     print()
 
-# display subjects of sentences given a synset
+# extract all subjects of sentences given a synset
 def _subject(synset, sents):
     synonyms = synset.lemma_names()
-    print("synonyms:", synonyms)
+    # print("synonyms:", synonyms)
 
+    subjects_all = []
     for i, sent in enumerate(sents):
-        print(i, ":", sent.sentence)
+        # print(i, ":", sent.sentence)
+        subjects = []
 
         lemma_inds = _get_indices_of_synsets(sent, synonyms)
-        print("lemma_inds:", lemma_inds)
+        # print("lemma_inds:", lemma_inds)
 
         # may have more than one lemma_idx
         # e.g. lemma_inds = [2, 5]
 
         for lemma_idx in lemma_inds:
             subject = _extract_subject(sent, lemma_idx)
+            subjects.append(subject)
 
-            if subject == "":
-                print("no subject found")
-            else:
-                print("subject found:", subject)
-        print()
+            # TEST PRINT
+            # if subject == "":
+            #     print("no subject found")
+            # else:
+            #     print("subject found:", subject)
+
+        subjects_all.append(subjects)
+        # print()
+    return subjects_all
+
+######################################
+
+
+# extract all objects of sentences given a synset
+def _object(synset, sents):
+    synonyms = synset.lemma_names()
+    # print("synonyms:", synonyms)
+
+    objects_all = []
+    for i, sent in enumerate(sents):
+        # print(i, ":", sent.sentence)
+        objects = []
+
+        lemma_inds = _get_indices_of_synsets(sent, synonyms)
+        # print("lemma_inds:", lemma_inds)
+
+        # may have more than one lemma_idx
+        # e.g. lemma_inds = [2, 5]
+
+        for lemma_idx in lemma_inds:
+            # object = _extract_object(sent, lemma_idx)
+            object = ""
+            objects.append(object)
+
+            # TEST PRINT
+            # if subject == "":
+            #     print("no object found")
+            # else:
+            #     print("object found:", object)
+
+        objects_all.append(objects)
+        # print()
+    return objects_all

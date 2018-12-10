@@ -73,6 +73,16 @@ def _get_sents():
         sents = pickle.load(input)
     return sents
 
+# sents (of custom class) with keyword setter and getter
+def _set_keyword_sents(keyword, sents):
+    with open(pickle_dir + keyword + "_sents.pickle", 'wb') as output:
+        pickle.dump(sents, output)
+
+def _get_keyword_sents(keyword):
+    with open(pickle_dir + keyword + "_sents.pickle", 'rb') as input:
+        sents = pickle.load(input)
+    return sents
+
 # groves setter and getter for a specific keyword
 def _set_groves(keyword, groves):
     with open(pickle_dir + keyword + "_groves.pickle", 'wb') as output:
