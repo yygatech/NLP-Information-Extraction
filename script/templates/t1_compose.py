@@ -67,8 +67,8 @@ subjects_all = sub._subject(synset, sents[:10])
 objects_all = sub._object(synset, sents[:10])
 
 # TEST PRINT
-for objects in objects_all:
-    print(objects)
+# for objects in objects_all:
+#     print(objects)
 
 ######################################
 # Step 3: extract temporal information
@@ -76,4 +76,4 @@ for objects in objects_all:
 # time._extract_static_time(sents[100:110])
 
 ######################################
-# Step 4: extract temporal information
+# Step 4:
