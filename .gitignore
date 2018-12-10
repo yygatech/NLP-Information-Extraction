@@ -1,3 +1,5 @@
+.idea/Information-Extraction.iml
+.idea/misc.xml
 .idea/workspace.xml
 venv/
 script/*.pyc
