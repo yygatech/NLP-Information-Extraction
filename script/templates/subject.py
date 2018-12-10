@@ -65,8 +65,8 @@ def _extract_subject(sent, lemma_idx):
 
 
 # extract all subjects of sentences given a synset
-def _subject(synset, sents):
-    synonyms = synset.lemma_names()
+def _subject(synonyms, sents):
+    # synonyms = synset.lemma_names()
     # print("synonyms:", synonyms)
 
     subjects_all = []
@@ -153,8 +153,8 @@ def _extract_object(sent, lemma_idx):
 
 
 # extract all objects of sentences given a synset
-def _object(synset, sents):
-    synonyms = synset.lemma_names()
+def _object(synonyms, sents):
+    # synonyms = synset.lemma_names()
     # print("synonyms:", synonyms)
 
     objects_all = []
