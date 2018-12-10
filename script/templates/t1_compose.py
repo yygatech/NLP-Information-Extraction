@@ -19,7 +19,6 @@ synset_str = "compose.v.02"
 # Step 1: filter sentences by verb
 
 sents, synset = _filter_by_verb(synset_str)
-
 print("number of filtered sentences:", len(sents))
 
 # pickle keyword sents if never pickled
@@ -38,35 +37,27 @@ print("Create sents pickle:", sents_pickle)
 
 ####################################
 # sample
-idx = 1
-sentence = sentences[1]
-pos_tag = pos_tags[1]
-
-trees = Trees(sentence, pos_tag)
-ctree = trees.cp
-dtree = trees.dp
-netree = trees.ne
-
-print("print ctree:")
-# ctree.pretty_print()
-
-print("print dtree:")
-# print(dtree.to_conll(4))
-
-print("print ner tree:")
-# print(netree)
+# idx = 1
+# sentence = sentences[1]
+# pos_tag = pos_tags[1]
+#
+# trees = Trees(sentence, pos_tag)
+# ctree = trees.cp
+# dtree = trees.dp
+# netree = trees.ne
+#
+# print("print ctree:")
+# # ctree.pretty_print()
+#
+# print("print dtree:")
+# # print(dtree.to_conll(4))
+#
+# print("print ner tree:")
+# # print(netree)
 
 ######################################
 # Step 2: find subject and object
 from script.templates import subject as sub
-subjects1 = sub._subject(synset, sents[:2])
-
-print('subjects:', subjects1)
-
-# print('key:', synset)
-# candidates = subject_dt.extractSubDT(sents, keywords)
-# print(candidates)
-
 subjects_all = sub._subject(synset, sents[:10])
 
 # TEST PRINT
