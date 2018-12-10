@@ -6,12 +6,12 @@ from script.trees import Trees
 
 
 # function: get indices of a lemma
-def _get_indices_of_synsets(lemmas, synonyms):
+def _get_indices_of_synsets(lemmas, synwords):
 
     # print("synonyms:", synonyms)
     lemmas_inds = []
     for lemma_idx, lemma in enumerate(lemmas):
-        if lemma in synonyms:
+        if lemma in synwords:
             lemmas_inds.append(lemma_idx)
     return lemmas_inds
 
@@ -169,7 +169,6 @@ def _object(synonyms, sents):
         # e.g. lemma_inds = [2, 5]
 
         objects_sent = []
-        found = False
         for lemma_idx in lemma_inds:
             objects = _extract_object(sent, lemma_idx)
             objects_instance = []
@@ -181,14 +180,9 @@ def _object(synonyms, sents):
                     object_str = " ".join(object.leaves())
                     print("object", i, "found:", object_str)
                     sum[object.label()] = object_str
-                    found = True
 
                 objects_instance.append(sum)
             objects_sent.append(objects_instance)
-
-        if not found:
-            objects_sent = []
-
         objects_all.append(objects_sent)
         print()
 
@@ -196,16 +190,15 @@ def _object(synonyms, sents):
 
 
 ######################################
-def _triple(synset, sent, subjects, objects):
-    synonyms = synset.lemma_names()
-    # print("synonyms:", synonyms)
-
+def _triple(synwords, sent, subjects, objects):
     print("sentence:", sent.sentence)
+    print("subjects:", subjects)
+    print("objects:", objects)
 
     lemmas = _get_tree_lemmas(sent)
     print("lemmas:", lemmas)
 
-    lemma_inds = _get_indices_of_synsets(lemmas, synonyms)
+    lemma_inds = _get_indices_of_synsets(lemmas, synwords)
     print("lemma_inds:", lemma_inds)
 
     # may have more than one lemma_idx

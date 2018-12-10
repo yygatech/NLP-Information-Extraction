@@ -32,15 +32,12 @@ def _filter_of(sents):
     from script.task4_utils.get_tree_lemmas import _get_tree_lemmas
     from script.templates.subject import _get_indices_of_synsets
 
-    synonyms = synset.lemma_names()
-    # print("synonyms:", synonyms)
-
     filtered = []
     for sent in sents:
 
         # get tree lemmas
         lemmas = _get_tree_lemmas(sent)
-        lemma_inds = _get_indices_of_synsets(lemmas, synonyms)
+        lemma_inds = _get_indices_of_synsets(lemmas, synwords)
         for lemma_ind in lemma_inds:
             curr_word = lemmas[lemma_ind]
             next_word = lemmas[lemma_ind + 1]
@@ -107,12 +104,12 @@ for i, sent in enumerate(selected_sents):
     subjects = subjects_all[i]
     objects = objects_all[i]
 
-    x1, e1, x2 = sub._triple(synset, sent, subjects, objects)
-    print()
+    x1, e1, x2 = sub._triple(synwords, sent, subjects, objects)
     print(i, "sentence:", sent.sentence)
     print("e1:", e1)
     print("x1:", x1)
     print("x2:", x2)
+    print()
 
 #### Person and Location
 # from script.templates import entity
