@@ -24,6 +24,7 @@ def getCandidateWords(word, excludes):
 # function: filter sentences by verb snyset
 # parameter: verb synset as a string
 # return: a dictionary each entry of which contains an index (key) and a sent class (value)
+
 def _filter_by_verb(synset_synonyms):
 
     # extract sentences that contain the 'synset' verb

@@ -82,14 +82,14 @@ from script.templates import entity
 
 
 
-size = 20 # len(sents)
+size = 60 # len(sents)
 # from script.templates import geo
 # tolocs = geo._getLocation(sents[10:size], synwords)
 # print(tolocs)
 
 ### Time
 from script.templates import temporal
-times = temporal._extract_time(sents[:size])
+times = temporal._extract_time(sents[len(sents)-10:len(sents)])
 print(times)
 
 ######################################

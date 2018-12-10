@@ -104,7 +104,7 @@ def isPhaseMatch(phase, timewords):
 
 def isMatch(prep, time, timewords, prepwords):
     for p in prepwords:
-        if(prep.lower() == p.lower()):
+        if(prep.lower() == "during"):
             return True
     for t in timewords:
         if time.lower().__contains__(t):
@@ -120,24 +120,26 @@ def _extract_time(sents):
 
         # static time
         static_time = _extract_static_time_single_sentence(sent)
+        static_tag = ""
         if static_time != "":
-            # print('static time',static_time)
+            static_tag = static_time.label()
+            print(static_tag,'static time',static_time.leaves())
             timeInf1 = " ".join(static_time.leaves())
             timeInfs.append(timeInf1)
         else:
             timeInf1 = ""
+        if(static_tag.__contains__('TMP') != True):
+            # getTime by Pattern match
+            timeInf2 = _getPatternTime(sent)
 
-        # getTime by Pattern match
-        timeInf2 = _getPatternTime(sent)
-
-        for timeInf in timeInf2:
-            if(len(timeInf1.split(" "))>1 and len(timeInf.split(" "))>1):
-                s_word1 = timeInf1.split(" ")[0:2]
-                s_word2 = timeInf.split(" ")[0:2]
-                if(s_word1 != s_word2):
+            for timeInf in timeInf2:
+                if(len(timeInf1.split(" "))>1 and len(timeInf.split(" "))>1):
+                    s_word1 = timeInf1.split(" ")[0:2]
+                    s_word2 = timeInf.split(" ")[0:2]
+                    if(s_word1 != s_word2):
+                        timeInfs.append(timeInf)
+                else:
                     timeInfs.append(timeInf)
-            else:
-                timeInfs.append(timeInf)
         if(len(timeInfs) == 0):
             timeInfs.append("")
         print(timeInfs)
@@ -150,4 +152,4 @@ def getkeyTimeWords():
     return ["month","years", "ages", "times", "centuries","later than"]
 
 def getkeyTimePrep():
-    return [ "during", "later"]
+    return [ "during", "later", "within"]

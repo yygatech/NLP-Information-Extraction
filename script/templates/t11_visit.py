@@ -91,7 +91,7 @@ size = 20 # len(sents)
 
 ### Time
 from script.templates import temporal
-times = temporal._extract_time(sents[:size])
+times = temporal._extract_time(sents[len(sents)-10:len(sents)])
 print(times)
 
 
