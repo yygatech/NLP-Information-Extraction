@@ -11,7 +11,7 @@ def _traverse(tree, tree_list, rate_list):
             # print(subtree, "\n")
             _traverse(subtree, tree_list, rate_list)
 
-            subtree_str = str(subtree);
+            subtree_str = str(subtree)
             rate = 0
             if "TMP" in str(subtree.label()):
                 rate += 100
@@ -65,17 +65,89 @@ def _extract_static_time_single_sentence(sent):
         # print("%", highest_rate, selected_tree)
         return selected_tree.flatten()
 
+def _getPatternTime(sent):
+    '''
+    Return time(string)
+    :param sent:
+    :return:
+    '''
+    from script.templates import repattern as rp
+    pps = rp.getPPs([sent])
+    ret = []
+    for pp in pps:
+        pp_list = pp.split(" ")
+        prep = pp_list[0]
+        rest = " ".join(pp_list[1:])
+        # print(pp_list, prep, rest)
 
-def _extract_static_time(sents):
+        import re
+        if re.match(r'[0-9]+', str(rest)) != None:
+            ret.append(" ".join(pp_list))
+        if(isMatch(prep, rest, getkeyTimeWords(), getkeyTimePrep())):
+            ret.append(" ".join(pp_list))
+
+    keyphases = rp.getkeyPhases([sent], getkeyTimePrep())
+    for phases in keyphases:
+        for phase in phases:
+            if (isPhaseMatch(phase, getkeyTimeWords())):
+                ret.append(phase)
+
+    return ret
+
+def isPhaseMatch(phase, timewords):
+
+    for t in timewords:
+        if phase.lower().__contains__(t):
+            return True
+    else:
+        return False
+
+def isMatch(prep, time, timewords, prepwords):
+    for p in prepwords:
+        if(prep.lower() == p.lower()):
+            return True
+    for t in timewords:
+        if time.lower().__contains__(t):
+            return True
+    return False
+
+def _extract_time(sents):
+    ret = []
     for i, sent in enumerate(sents):
-        print(i, ":", sent.sentence)
-        static_time = _extract_static_time_single_sentence(sent)
-
-        if static_time == "":
-            print("no static time information")
-        else:
-            print("static time:", static_time)
+        timeInfs = []
         print()
+        print(i, sent.sentence)
 
-def getTimeInf(sents):
-    _extract_static_time(sents)
+        # static time
+        static_time = _extract_static_time_single_sentence(sent)
+        if static_time != "":
+            # print('static time',static_time)
+            timeInf1 = " ".join(static_time.leaves())
+            timeInfs.append(timeInf1)
+        else:
+            timeInf1 = ""
+
+        # getTime by Pattern match
+        timeInf2 = _getPatternTime(sent)
+
+        for timeInf in timeInf2:
+            if(len(timeInf1.split(" "))>1 and len(timeInf.split(" "))>1):
+                s_word1 = timeInf1.split(" ")[0:2]
+                s_word2 = timeInf.split(" ")[0:2]
+                if(s_word1 != s_word2):
+                    timeInfs.append(timeInf)
+            else:
+                timeInfs.append(timeInf)
+        if(len(timeInfs) == 0):
+            timeInfs.append("")
+        print(timeInfs)
+        ret.append(timeInfs)
+
+    return ret
+
+
+def getkeyTimeWords():
+    return ["month","years", "ages", "times", "centuries","later than"]
+
+def getkeyTimePrep():
+    return [ "during", "later"]

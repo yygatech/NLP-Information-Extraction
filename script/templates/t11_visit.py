@@ -82,7 +82,7 @@ from script.templates import entity
 
 
 
-size = 10 # len(sents)
+size = 20 # len(sents)
 
 ### to Location
 # from script.templates import geo
@@ -91,7 +91,7 @@ size = 10 # len(sents)
 
 ### Time
 from script.templates import temporal
-times = temporal.getTimeInf(sents[:size])
+times = temporal._extract_time(sents[:size])
 print(times)
 
 

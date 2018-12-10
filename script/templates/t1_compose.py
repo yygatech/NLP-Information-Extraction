@@ -63,24 +63,29 @@ print("Create sents pickle:", sents_pickle)
 ######################################
 # Step 2: find subject and object
 from script.templates import subject as sub
-subjects_all = sub._subject(synwords, sents[:10])
+# subjects_all = sub._subject(synwords, sents[:10])
 
 # TEST PRINT
 # for subjects in subjects_all:
 #     print(subjects)
 
-objects_all = sub._object(synwords, sents[:10])
+# objects_all = sub._object(synwords, sents[:10])
 
 # TEST PRINT
 # for objects in objects_all:
 #     print(objects)
 
-#### Person and Location
-from script.templates import entity
-persons = entity.extractEnt(sents, 'PERSON')
-print('Person:', persons)
-locations = entity.extractEnt(sents, 'GPE')
-print('Location:', locations)
+# #### Person and Location
+# from script.templates import entity
+# persons = entity.extractEnt(sents, 'PERSON')
+# print('Person:', persons)
+# locations = entity.extractEnt(sents, 'GPE')
+# print('Location:', locations)
+
+### Time
+from script.templates import temporal
+times = temporal._extract_time(sents[:10])
+print(times)
 
 ######################################
 # Step 3: extract temporal information

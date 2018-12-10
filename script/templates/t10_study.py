@@ -83,9 +83,14 @@ from script.templates import entity
 
 
 size = 20 # len(sents)
-from script.templates import geo
-tolocs = geo._getLocation(sents[10:size], synwords)
-print(tolocs)
+# from script.templates import geo
+# tolocs = geo._getLocation(sents[10:size], synwords)
+# print(tolocs)
+
+### Time
+from script.templates import temporal
+times = temporal._extract_time(sents[:size])
+print(times)
 
 ######################################
 # Step 3: extract temporal information
