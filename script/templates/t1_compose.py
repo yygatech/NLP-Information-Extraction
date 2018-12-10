@@ -70,6 +70,13 @@ objects_all = sub._object(synset, sents[:10])
 # for objects in objects_all:
 #     print(objects)
 
+#### Person and Location
+from script.templates import entity
+persons = entity.extractEnt(sents, 'PERSON')
+print('Person:', persons)
+locations = entity.extractEnt(sents, 'GPE')
+print('Location:', locations)
+
 ######################################
 # Step 3: extract temporal information
 # from script.templates import temporal as time
