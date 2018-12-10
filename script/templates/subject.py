@@ -92,7 +92,6 @@ def _subject(synset, sents):
     subjects_all = []
     for i, sent in enumerate(sents):
         # print(i, ":", sent.sentence)
-        subjects = []
 
         lemma_inds = _get_indices_of_synsets(sent, synonyms)
         # print("lemma_inds:", lemma_inds)
@@ -100,15 +99,24 @@ def _subject(synset, sents):
         # may have more than one lemma_idx
         # e.g. lemma_inds = [2, 5]
 
+        subjects = []
         for lemma_idx in lemma_inds:
             subject = _extract_subject(sent, lemma_idx)
-            subjects.append(subject)
 
             # TEST PRINT
             # if subject == "":
             #     print("no subject found")
             # else:
             #     print("subject found:", subject)
+
+            sub = {}
+            if subject == "":
+                print("no subject found")
+            else:
+                subject_str = "".join(subject.leaves())
+                print("subject found:", subject_str)
+                sub[subject.label()] = subject_str
+                subjects.append(sub)
 
         subjects_all.append(subjects)
         # print()
