@@ -56,7 +56,7 @@ synsets["influence"] = "influence.v.01"
 synsets["study"] = "learn.v.04"
 # definition: be a student of a certain subject
 
-# template 11: visit(verb, sb, from-loc, to-loc, time?)
+# template 11: visit(verb, sb, to-loc, time?)
 synsets["visit"] = "visit.v.01"
 # definition: go to see a place, as for entertainment
 

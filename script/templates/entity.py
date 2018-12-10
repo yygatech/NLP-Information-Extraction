@@ -11,7 +11,7 @@ def extractEnt(sents, key="PERSON"):
     for i, sent in enumerate(sents):
         tree = nltk.ne_chunk(sent.pos)
         getNodes(tree, key, ret)
-    return set(ret)
+    return list(set(ret))
 
 def getNodes(parent, key, output):
     '''
@@ -26,9 +26,12 @@ def getNodes(parent, key, output):
     for node in parent:
         if type(node) is nltk.Tree:
             # print(node.label(), node.leaves())
-            if str(node.label()) == key:
+            if str(node.label()) in key:
                 word = node.leaves()[0][0]
                 tag = node.leaves()[0][1]
-                if(tag != 'JJ'):
-                    output.append(word)
+                # if(tag != 'JJ'):
+                output.append(word)
             getNodes(node, key, output)
+
+def getAllPRP():
+    return ['I','me', 'we', 'us', 'you', 'she', 'her', 'he', 'him', 'they', 'them']
