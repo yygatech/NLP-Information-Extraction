@@ -1,132 +1,127 @@
 # Template 1: compose(composer, verb, music, at-time, at-loc)
 
-from nltk.corpus import wordnet as wn
-
-from script.task4_utils.filter_by_verb import _filter_by_verb
-from script.task4_utils.pickle_if_not import _pickle_keyword_sents_if_not
-from script.task4_utils import filter_by_verb as fs
-# from script.task4_utils.pickle_if_not import _pickle_keyword_groves_if_not
+# import module
+from script.utils import filters as fr
+from script.utils import tree_utils as tu
+from script.utils import pickle_utils as pu
+from script.templates import sub_object as sub
+from script.templates import entity, temporal
+from script.templates.information import _gather_info_batch
+from script.utils import display as dp
 
 # This is important to unpickle class Sentence.
 import sys
-from script import sentence
+from script.classes import sentence
 sys.modules['sentence'] = sentence
 
-##################################
+
+####################################################################
+# Step 0: preparation
 keyword = "compose"
 synset_str = "compose.v.02"
-
 excludes = ['write']
-synwords = fs.getCandidateWords(synset_str, excludes)
+synwords = fr.getCandidateWords(synset_str, excludes)
 print('target verbs:', synwords)
 
-##################################
-# Step 1: filter sentences by verb
 
-sents = _filter_by_verb(synwords)
+####################################################################
+# Step 1: filter sentences
+# filter by verb (keyword)
+sents = fr._filter_by_keyword(synwords)
 print("number of filtered sentences:", len(sents))
 
+# TEST: select samples for testing
+sents = sents[100:120]
+print("sample size:", len(sents))
 
-# filter those preceed 'of'
-def _filter_of(sents):
-    from script.task4_utils.get_tree_lemmas import _get_tree_lemmas
-    from script.templates.subject import _get_indices_of_synsets
+# parse into groves
+groves = tu._parse_groves(sents, cp=True, ne=True)
+# lemmas_all = tu._grove_to_lemmas(groves)
 
-    filtered = []
-    for sent in sents:
-
-        # get tree lemmas
-        lemmas = _get_tree_lemmas(sent)
-        lemma_inds = _get_indices_of_synsets(lemmas, synwords)
-        for lemma_ind in lemma_inds:
-            curr_word = lemmas[lemma_ind]
-            next_word = lemmas[lemma_ind + 1]
-            if next_word != "of":
-                filtered.append(sent)
-                break
-    return filtered
-
-# sents = _filter_of(sents)
-# print("number of 2nd-round filtered sentences:", len(sents))
+# filter those 'compose' preceding 'of'
+sents, groves = fr._filter_of(synwords, sents, groves)
+print("number of 'of'-filtered sentences:", len(sents))
+# print("number of 'of'-filtered groves:", len(groves))
 
 # pickle keyword sents if never pickled
-sents_pickle = _pickle_keyword_sents_if_not(keyword, sents)
-print("Create sents pickle:", sents_pickle)
+if_pickled = pu._pickle_keyword_sents_if_not(keyword, sents)
+print("create sents pickle:", if_pickled)
 
-# get or wrap trees if trees do not exist
+# TEST: display before pickled keyword sents and unpickled keyword sents
+# print()
+# print("before pickled sents:")
+# dp._display_sents(sents)
+# unpickled_sents = pu._get_keyword_sents(keyword)
+# print("unpickled sents:")
+# dp._display_sents(unpickled_sents)
+
 # this section below doesn't work!
+# pickle keyword groves if never pickled
 # error: AttributeError: Can't pickle local object 'DependencyGraph.__init__.<locals>.<lambda>'
-# groves_pickle = _pickle_keyword_groves_if_not(keyword, sents)
-# print("Create groves pickle:", groves_pickle)
+# if_groves_pickled = pu._pickle_keyword_groves_if_not(keyword, groves)
+# print("create groves pickle:", if_groves_pickled)
+# TEST: unpickle groves
+# unpickled_groves = pu._get_groves(keyword)
+# print("size of groves:", len(unpickled_groves))
 
-# unpickle groves
-# groves = pu._get_groves(keyword)
-# print("length of groves", len(groves))
 
-####################################
-# sample
-# idx = 1
-# sentence = sentences[1]
-# pos_tag = pos_tags[1]
-#
-# trees = Trees(sentence, pos_tag)
-# ctree = trees.cp
-# dtree = trees.dp
-# netree = trees.ne
-#
-# print("print ctree:")
-# # ctree.pretty_print()
-#
-# print("print dtree:")
-# # print(dtree.to_conll(4))
-#
-# print("print ner tree:")
-# # print(netree)
-
-######################################
-# Step 2: find subject and object
-from script.templates import subject as sub
-selected_sents = sents[50:60]
-subjects_all = sub._subject(synwords, selected_sents)
+####################################################################
+# Step 2: extract subject and object (or actor and receiver)
+subjects_all = sub._subject_batch(synwords, groves)
 
 # TEST PRINT
-# for subjects in subjects_all:
-#     print(subjects)
+# for i, subjects in enumerate(subjects_all):
+#     print("subject", i, ":", subjects)
 
-objects_all = sub._object(synwords, selected_sents)
+objects_all = sub._object_batch(synwords, groves)
 
 # TEST PRINT
-# for objects in objects_all:
-#     print(objects)
+# for i, objects in enumerate(objects_all):
+#     print("object", i, ":", objects)
 
-# form triples: v(e1, x1, x2)
-for i, sent in enumerate(selected_sents):
-    subjects = subjects_all[i]
-    objects = objects_all[i]
+# order subject and object(s)
+sub._triple_batch(synwords, groves, subjects_all, objects_all)
 
-    x1, e1, x2 = sub._triple(synwords, sent, subjects, objects)
-    print(i, "sentence:", sent.sentence)
-    print("e1:", e1)
-    print("x1:", x1)
-    print("x2:", x2)
+# TEST
+# print()
+# for i, subjects in enumerate(subjects_all):
+#     print("sentence", i, ":", sents[i].sentence)
+#     print("subject", i, ":", subjects)
+#     print("object", i, ":", objects_all[i])
+#     print()
+
+
+####################################################################
+# Step 3: extract person, location and time information
+# person
+persons = entity._extract_entity_batch(sents, groves, 'PERSON')
+# dp._display_a_list(persons, "person info")
+
+# location
+locations = entity._extract_entity_batch(sents, groves, 'GPE')
+# dp._display_a_list(locations, "location info")
+
+# time
+times = temporal._extract_time_batch(sents, groves)
+
+# TEST PRINT
+# print()
+# print("time info:")
+# for i, time in enumerate(times):
+#     print(i, sents[i].sentence)
+#     print(i, time)
+#     print()
+
+
+####################################################################
+# Step 4: gather extracted info
+info_batch = _gather_info_batch(keyword, sents, subjects_all, objects_all, times, locations, persons)
+
+# TEST PRINT
+print()
+print("info_batch:")
+for i, info in enumerate(info_batch):
+    print(i)
+    for j, key in enumerate(info):
+        print(key, "-", info[key])
     print()
-
-#### Person and Location
-# from script.templates import entity
-# persons = entity.extractEnt(sents, 'PERSON')
-# print('Person:', persons)
-# locations = entity.extractEnt(sents, 'GPE')
-# print('Location:', locations)
-
-### Time
-from script.templates import temporal
-times = temporal._extract_time(sents[50:60])
-print(times)
-
-######################################
-# Step 3: extract temporal information
-# from script.templates import temporal as time
-# time._extract_static_time(sents[100:110])
-
-######################################
-# Step 4:

@@ -1,14 +1,12 @@
 # Template 1: compose(composer, verb, music, at-time, at-loc)
 
-from nltk.corpus import wordnet as wn
+from script.utils import filters as fs
+from script.utils.pickle_utils import _pickle_keyword_sents_if_not
+# from script.utils.pickle_if_not import _pickle_keyword_groves_if_not
 
-from script.task4_utils import filter_by_verb as fs
-from script.task4_utils.pickle_if_not import _pickle_keyword_sents_if_not
-# from script.task4_utils.pickle_if_not import _pickle_keyword_groves_if_not
-
-# This is important to unpickle class Sentence.
+# This is important to unpickle classes Sentence.
 import sys
-from script import sentence
+from script.classes import sentence
 sys.modules['sentence'] = sentence
 
 ##################################
@@ -63,7 +61,6 @@ print("Create sents pickle:", sents_pickle)
 
 ######################################
 # # Step 2: find subject and object
-from script.templates import subject as sub
 # subjects_all = sub._subject(synwords, sents[:10])
 #
 # # TEST PRINT
@@ -77,7 +74,6 @@ from script.templates import subject as sub
 #     print(objects)
 
 #### Person and Location
-from script.templates import entity
 # persons = entity.extractEnt(sents, 'PERSON')
 # print('Person:', persons)
 # locations = entity.extractEnt(sents, ['GPE','GSP','PERSON','ORGANIZATION'])
