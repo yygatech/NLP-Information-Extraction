@@ -127,3 +127,10 @@ for i, info in enumerate(info_batch):
     for j, key in enumerate(info):
         print(key, "-", info[key])
     print()
+datas = []
+for i, info in enumerate(info_batch):
+    data = []
+    for j, key in enumerate(info):
+        data.append(info[key])
+    datas.append(data)
+

@@ -120,6 +120,5 @@ for i, info in enumerate(info_batch):
     print(i)
     for j, key in enumerate(info):
         if (j != 4 or j != 5):
-            print(j)
             print(key, "-", info[key])
     print()

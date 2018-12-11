@@ -30,7 +30,7 @@ print("number of selected sentences:", len(sents))
 
 # TEST: select samples for testing
 sample = 20
-if sample < len(sents):
+if sample > len(sents):
     sample = len(sents)
 
 sents = sents[:sample]
