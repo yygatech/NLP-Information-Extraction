@@ -117,7 +117,7 @@ info_batch = _gather_info_batch(keyword, sents, subjects_all, objects_all, times
 
 # TEST PRINT
 print()
-print("# templates 8: visit(verb, sb, to-loc, time?)")
+print("# templates 8: visit(verb, sb, to-loc, time)")
 print("Filled Template:")
 for i, info in enumerate(info_batch):
     print(i)

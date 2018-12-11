@@ -44,12 +44,10 @@ synsets["possess"] = "possess.v.02"
 # definition: have ownership or possession of
 
 # templates 11: give(verb, giver, sth, at-time, at-place)
-####################################################################
 synsets["give"] ="give.v.03"
 # definition: transfer possession of something concrete or abstract to somebody
 
 # templates 12: develop(verb, sb, sth, at-time, at-place)
-####################################################################
 synsets["develop"] ="develop.v.01"
 # definition: make something new, such as a product or a mental or artistic creation
 

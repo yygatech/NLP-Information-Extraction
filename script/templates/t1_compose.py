@@ -29,11 +29,12 @@ sents = fr.getCandidateSentences(synwords, keyword, synset_str)
 print("number of selected sentences:", len(sents))
 
 # TEST: select samples for testing
-sample = 20
-if sample < len(sents):
+sample = 20 # len(sents)
+start = 1
+if sample > len(sents):
     sample = len(sents)
 
-sents = sents[:sample]
+sents = sents[start:sample+start]
 print("sample size:", len(sents))
 
 # parse into groves

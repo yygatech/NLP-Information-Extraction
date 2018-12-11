@@ -31,7 +31,7 @@ def _getLocation(sents, groves, verbs):
                     if(pp_list[0].upper() == tag):
                         l = getLocForGeo(loc,locations)
                         if len(l)>0:
-                            location.append(l)
+                            location.append(loc)
                         # second priority
                         elif(len(location)==0):
                             location.append(loc)
@@ -39,7 +39,7 @@ def _getLocation(sents, groves, verbs):
                 for pp in pps:
                     pp_list = pp.split(" ")
                     loc = pp[(len(pp_list[0]) + 1):]
-                    if isPartof(loc, locations):
+                    if isPartof(loc, locations) and (pp_list[0] not in getExcudePrepForLoc()):
                         location.append(loc)
             if (word not in prp) and (len(location) == 0):
                 n_word = len(word.split(" "))
@@ -91,7 +91,7 @@ def _toLocation(sents, groves, verbs):
                 for pp in pps:
                     pp_list = pp.split(" ")
                     loc = pp[(len(pp_list[0]) + 1):]
-                    if isPartof(loc, locations):
+                    if isPartof(loc, locations) and (pp_list[0] not in getExcudePrepForLoc()):
                         location.append(loc)
             if (word not in prp) and (len(location) == 0):
                     location.append(word)
@@ -111,7 +111,7 @@ def _toLocation(sents, groves, verbs):
 def getLocForGeo(loc, locations):
     for l in locations:
         if str(loc).__contains__(l):
-            print(loc, l)
+            # print(loc, l)
             return l
     return ""
 
@@ -151,6 +151,9 @@ def _getNextWord(sent, verbs):
                     ret.append((sent.tokens[i+1], sent.tag[i+1]))
     # print('ret:', ret)
     return ret
+
+def getExcudePrepForLoc():
+    return ['by']
 
 
 

@@ -57,9 +57,13 @@ def _extract_subject(trees, lemma_idx):
     # print("subject:", subject, "\n")
 
     # return value
+    # print()
+    # print(trees.sent.sentence)
+
     if subject == "":
         return ""
     else:
+        # print(subject.flatten())
         return subject.flatten()
 
 
@@ -100,6 +104,7 @@ def _subject_batch(synwords, groves):
     subjects_batch = []
     for grove in groves:
         subjects = _subject(synwords, grove)
+
         subjects_batch.append(subjects)
     return subjects_batch
 

@@ -56,9 +56,9 @@ def getCandidateSentences(synset_synonyms,keyword, label):
             # print()
             # print(sentence)
             if(word == keyword):
-                if str(meaning).__contains__(prekeyword):
+                # if str(meaning).__contains__(prekeyword):
                     # print(word, meaning, meaning.definition())
-                    ret.append(sent)
+                ret.append(sent)
             elif str(meaning).__contains__(label):
                 print(word, meaning, meaning.definition())
                 ret.append(sent)
