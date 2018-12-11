@@ -17,8 +17,8 @@ import task3_2
 import task3_4
 import task3_5
 
-import pickle_utils as pu
-from sentence import Sentence
+import script.utils.pickle_utils as pu
+from script.classes.sentence import Sentence
 
 ##################################
 # load corpus
@@ -33,12 +33,13 @@ pu._set_words_all(words_all)
 # TEST
 # print("sentences")
 # print(sentences[1:2])
+print("len(sentences)", len(sentences))
 
 # print("words_all")
 # print(words_all[1:2])
 
 ##################################
-## 3.3
+## 3.2
 pos_tags_all = task3_3._pos_tag(words_all)
 pu._set_pos_tags_all(pos_tags_all)
 
@@ -61,7 +62,7 @@ pu._set_wn_tags_all(wn_tags_all)
 # print(wn_tags_all[1:2])
 
 ##################################
-## 3.2
+## 3.3
 lemmas_all = task3_2._lemmatize(words_all, wn_tags_all)
 pu._set_lemmas_all(lemmas_all)
 
