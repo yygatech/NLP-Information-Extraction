@@ -1,17 +1,32 @@
 
-def extractEnt(sents, key="PERSON"):
+def extractEnt(sent, grove, key):
     '''
-    Entity Recognition
-    :param sents:
+    entity recognition
+    :param sent:
+    :param grove
     :param key:'PERSON', 'LOCATION'
     :return:
     '''
-    import nltk
     ret = []
-    for i, sent in enumerate(sents):
-        tree = nltk.ne_chunk(sent.pos)
-        getNodes(tree, key, ret)
+    tree = grove.ne
+    getNodes(tree, key, ret)
     return list(set(ret))
+
+
+def _extract_entity_batch(sents, groves, key):
+    '''
+    batch entity recognition
+    :param sents:
+    :param groves
+    :param key:
+    :return: entity batch
+    '''
+    entity_batch = []
+    for i, sent in enumerate(sents):
+        entity = extractEnt(sent, groves[i], key)
+        entity_batch.append(entity)
+    return entity_batch
+
 
 def getNodes(parent, key, output):
     '''
@@ -32,6 +47,7 @@ def getNodes(parent, key, output):
                 # if(tag != 'JJ'):
                 output.append(word)
             getNodes(node, key, output)
+
 
 def getAllPRP():
     return ['I','me', 'we', 'us', 'you', 'she', 'her', 'he', 'him', 'they', 'them']

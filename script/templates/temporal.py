@@ -1,10 +1,13 @@
 # extract static temporal information
+# import class
+from script.classes.trees import Trees
 
+# import module
 import nltk
 import re
 
-from script.trees import Trees
 
+# function: rate trees (subtrees)
 def _traverse(tree, tree_list, rate_list):
     for subtree in tree:
         if type(subtree) == nltk.tree.Tree:
@@ -38,8 +41,7 @@ def _traverse(tree, tree_list, rate_list):
 
 
 # function: extract static time information
-def _extract_static_time_single_sentence(sent):
-    trees = Trees(sent)
+def _extract_static_time_single_sentence(trees):
     tree = trees.cp
     # print("tree:\n", tree)
     tree_list = []
@@ -64,6 +66,7 @@ def _extract_static_time_single_sentence(sent):
     else:
         # print("%", highest_rate, selected_tree)
         return selected_tree.flatten()
+
 
 def _getPatternTime(sent):
     '''
@@ -94,6 +97,7 @@ def _getPatternTime(sent):
 
     return ret
 
+
 def isPhaseMatch(phase, timewords):
 
     for t in timewords:
@@ -101,6 +105,7 @@ def isPhaseMatch(phase, timewords):
             return True
     else:
         return False
+
 
 def isMatch(prep, time, timewords, prepwords):
     for p in prepwords:
@@ -111,45 +116,62 @@ def isMatch(prep, time, timewords, prepwords):
             return True
     return False
 
-def _extract_time(sents):
-    ret = []
-    for i, sent in enumerate(sents):
-        timeInfs = []
-        print()
-        print(i, sent.sentence)
 
-        # static time
-        static_time = _extract_static_time_single_sentence(sent)
-        static_tag = ""
-        if static_time != "":
-            static_tag = static_time.label()
-            print(static_tag,'static time',static_time.leaves())
-            timeInf1 = " ".join(static_time.leaves())
-            timeInfs.append(timeInf1)
-        else:
-            timeInf1 = ""
-        if(static_tag.__contains__('TMP') != True):
-            # getTime by Pattern match
-            timeInf2 = _getPatternTime(sent)
+def _extract_time(sent, grove):
+    '''
+    extract time information for one sentence
+    :param sent: a sentence
+    :return: a list of time information
+    '''
+    timeInfs = []
 
-            for timeInf in timeInf2:
-                if(len(timeInf1.split(" "))>1 and len(timeInf.split(" "))>1):
-                    s_word1 = timeInf1.split(" ")[0:2]
-                    s_word2 = timeInf.split(" ")[0:2]
-                    if(s_word1 != s_word2):
-                        timeInfs.append(timeInf)
-                else:
+    # static time
+    static_time = _extract_static_time_single_sentence(grove)
+    static_tag = ""
+    if static_time != "":
+        static_tag = static_time.label()
+        # print(static_tag, 'static time', static_time.leaves())
+        timeInf1 = " ".join(static_time.leaves())
+        timeInfs.append(timeInf1)
+    else:
+        timeInf1 = ""
+
+    if (static_tag.__contains__('TMP') != True):
+        # getTime by Pattern match
+        timeInf2 = _getPatternTime(sent)
+
+        for timeInf in timeInf2:
+            if (len(timeInf1.split(" ")) > 1 and len(timeInf.split(" ")) > 1):
+                s_word1 = timeInf1.split(" ")[0:2]
+                s_word2 = timeInf.split(" ")[0:2]
+                if (s_word1 != s_word2):
                     timeInfs.append(timeInf)
-        if(len(timeInfs) == 0):
-            timeInfs.append("")
-        print(timeInfs)
-        ret.append(timeInfs)
+            else:
+                timeInfs.append(timeInf)
+    # ?
+    # if (len(timeInfs) == 0):
+    #     timeInfs.append("")
 
-    return ret
+    # print("time info:", timeInfs)
+    return timeInfs
+
+def _extract_time_batch(sents, groves):
+    '''
+    in batch, extract time information
+    :param sents:
+    :return: a batch of time information
+    '''
+    time_batch = []
+    for i, sent in enumerate(sents):
+        # print("sentence", i, ":", sent.sentence)
+        time = _extract_time(sent, groves[i])
+        time_batch.append(time)
+    return time_batch
 
 
 def getkeyTimeWords():
     return ["month","years", "ages", "times", "centuries","later than"]
+
 
 def getkeyTimePrep():
     return [ "during", "later", "within"]
