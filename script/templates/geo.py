@@ -2,18 +2,23 @@ from script.templates import repattern as rp
 from script.templates import entity
 
 
-def _getLocation(sents, verbs):
+def _getLocation(sents, groves, verbs):
     ret = []
+    locs = entity._extract_entity_batch(sents, groves, ['GPE', 'GSP', 'GPE', 'ORGANIZATION'])
+    locations = []
+    for loc in locs:
+        for l in loc:
+            locations.append(l)
+
     for sen in sents:
-        print()
-        print(sen.sentence)
         pps = rp.getPPs([sen])
-        locations = entity.extractEnt(sents, ['GPE', 'GSP','GPE', 'ORGANIZATION'])
         prp = entity.getAllPRP()
         nextwords = _getNextWord(sen, verbs)
-        print('nextwords:', nextwords)
-        print('pps:',pps)
-        print('locations:',locations)
+        # print()
+        # print('sentence:', sen.sentence)
+        # print('nextwords:', nextwords)
+        # print('pps:',pps)
+        # print('locations:',locations)
 
         location = []
 
@@ -24,8 +29,9 @@ def _getLocation(sents, verbs):
                     pp_list = pp.split(" ")
                     loc = pp[(len(pp_list[0]) + 1):]
                     if(pp_list[0].upper() == tag):
-                        if isPartof(loc, locations):
-                            location.append(loc)
+                        l = getLocForGeo(loc,locations)
+                        if len(l)>0:
+                            location.append(l)
                         # second priority
                         elif(len(location)==0):
                             location.append(loc)
@@ -39,29 +45,29 @@ def _getLocation(sents, verbs):
                 n_word = len(word.split(" "))
                 if(tag == 'IN') and (n_word != 1):
                     location.append(word)
-        print('location:', location)
+                elif(n_word == 1) and (len(word)>2):
+                    location.append(word)
+        # print('location:', location)
         ret.append(list(set(location)))
 
-
-        # print(pps)
-        # for loc in locations:
-        #     print(loc)
-        #     if loc in str(pps):
-        #         print(pps)
-        nextwords = _getNextWord(sen, verbs)
-        # print(nextwords)
     return ret
 
 
-def _toLocation(sents, verbs):
+def _toLocation(sents, groves, verbs):
     ret = []
+
+    locs = entity._extract_entity_batch(sents, groves, ['GPE', 'GSP', 'GPE', 'ORGANIZATION'])
+    locations = []
+    for loc in locs:
+        for l in loc:
+            locations.append(l)
+
     for sen in sents:
-        print()
-        print(sen.sentence)
         pps = rp.getPPs([sen])
-        locations = entity.extractEnt(sents, ['GPE', 'GSP','GPE', 'ORGANIZATION'])
         prp = entity.getAllPRP()
         nextwords = _getNextWord(sen, verbs)
+        # print()
+        # print(sen.sentence)
         # print('nextwords:', nextwords)
         # print(pps)
         # print(locations)
@@ -75,8 +81,9 @@ def _toLocation(sents, verbs):
                     pp_list = pp.split(" ")
                     loc = pp[(len(pp_list[0]) + 1):]
                     if(pp_list[0].upper() == tag):
-                        if isPartof(loc, locations):
-                            location.append(loc)
+                        l = getLocForGeo(loc, locations)
+                        if len(l) > 0:
+                            location.append(l)
                         # second priority
                         elif(len(location)==0):
                             location.append(loc)
@@ -100,6 +107,13 @@ def _toLocation(sents, verbs):
         nextwords = _getNextWord(sen, verbs)
         # print(nextwords)
     return ret
+
+def getLocForGeo(loc, locations):
+    for l in locations:
+        if str(loc).__contains__(l):
+            print(loc, l)
+            return l
+    return ""
 
 def isPartof(loc, locations):
     for l in locations:

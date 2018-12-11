@@ -170,7 +170,7 @@ def _extract_time_batch(sents, groves):
 
 
 def getkeyTimeWords():
-    return ["month","years", "ages", "times", "centuries","later than"]
+    return ["month","years", "ages", "times", "centuries", "century", "later than"]
 
 
 def getkeyTimePrep():

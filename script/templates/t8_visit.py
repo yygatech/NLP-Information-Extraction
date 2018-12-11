@@ -1,4 +1,6 @@
 
+# Template 1: compose(composer, verb, music, at-time, at-loc)
+
 # import module
 from script.utils import filters as fr
 from script.utils import tree_utils as tu
@@ -13,11 +15,11 @@ import sys
 from script.classes import sentence
 sys.modules['sentence'] = sentence
 
-# templates 1: compose(verb, composer, music, at-time, at-loc)
+# templates 8: visit(verb, sb, to-loc, time?)
 ####################################################################
 # Step 0: preparation
-keyword = "compose"
-synset_str = "compose.v.02"
+keyword = "visit"
+synset_str = "visit.v.01"
 
 synwords = fr.getCandidateWords(synset_str)
 print('target verbs:', synwords)
@@ -30,7 +32,7 @@ print("number of selected sentences:", len(sents))
 
 # TEST: select samples for testing
 sample = 20
-if sample < len(sents):
+if sample > len(sents):
     sample = len(sents)
 
 sents = sents[:sample]
@@ -39,11 +41,6 @@ print("sample size:", len(sents))
 # parse into groves
 groves = tu._parse_groves(sents, cp=True, ne=True)
 # lemmas_all = tu._grove_to_lemmas(groves)
-
-# filter those 'compose' preceding 'of'
-sents, groves = fr._filter_of(synwords, sents, groves)
-print("number of 'of'-filtered sentences:", len(sents))
-# print("number of 'of'-filtered groves:", len(groves))
 
 # pickle keyword sents if never pickled
 if_pickled = pu._pickle_keyword_sents_if_not(keyword, sents)
@@ -98,7 +95,7 @@ sub._triple_batch(synwords, groves, subjects_all, objects_all)
 
 # location
 from script.templates import geo
-locations = geo._getLocation(sents, groves, synwords)
+locations = geo._toLocation(sents, groves, synwords)
 # dp._display_a_list(locations, "location info")
 
 
@@ -120,9 +117,11 @@ info_batch = _gather_info_batch(keyword, sents, subjects_all, objects_all, times
 
 # TEST PRINT
 print()
+print("# templates 8: visit(verb, sb, to-loc, time?)")
 print("Filled Template:")
 for i, info in enumerate(info_batch):
     print(i)
     for j, key in enumerate(info):
-        print(key, "-", info[key])
+        if ("objects" != key):
+            print(key, "-", info[key])
     print()

@@ -13,11 +13,11 @@ import sys
 from script.classes import sentence
 sys.modules['sentence'] = sentence
 
-# templates 1: compose(verb, composer, music, at-time, at-loc)
+# templates 4: invent/create(verb, inventor, invention, at-time, at-loc)
 ####################################################################
 # Step 0: preparation
-keyword = "compose"
-synset_str = "compose.v.02"
+keyword = "invent"
+synset_str = "invent.v.01"
 
 synwords = fr.getCandidateWords(synset_str)
 print('target verbs:', synwords)
@@ -30,7 +30,7 @@ print("number of selected sentences:", len(sents))
 
 # TEST: select samples for testing
 sample = 20
-if sample < len(sents):
+if sample > len(sents):
     sample = len(sents)
 
 sents = sents[:sample]
@@ -39,11 +39,6 @@ print("sample size:", len(sents))
 # parse into groves
 groves = tu._parse_groves(sents, cp=True, ne=True)
 # lemmas_all = tu._grove_to_lemmas(groves)
-
-# filter those 'compose' preceding 'of'
-sents, groves = fr._filter_of(synwords, sents, groves)
-print("number of 'of'-filtered sentences:", len(sents))
-# print("number of 'of'-filtered groves:", len(groves))
 
 # pickle keyword sents if never pickled
 if_pickled = pu._pickle_keyword_sents_if_not(keyword, sents)

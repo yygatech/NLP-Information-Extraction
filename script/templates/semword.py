@@ -10,13 +10,21 @@ from nltk.corpus import stopwords
 
 
 def simplified_lesk(target, sentence):
-    maximum = 0
-    maxsense = ""
+    '''
+    Get the word(target) meaning in sentence
+
+    :param target:
+    :param sentence:
+    :return:
+    '''
+
     stop_words = stopwords.words('english')
     s_list = [token.lower() for token in word_tokenize(sentence)]
 
-    sets = wn.synsets(target)
-    # print(len(sets))
+    sets = wn.synsets(target) # all the meanings of target
+
+    maximum = 0
+    maxsense = ""
     max_n = 0
     for i in range(len(sets)):  # first ten senses
         # print('0. Word sense '+str(i))
