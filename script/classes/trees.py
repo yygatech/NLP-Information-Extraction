@@ -6,6 +6,7 @@ from nltk import ne_chunk
 # parsed tree objects
 class Trees:
     def __init__(self, sent, cp=True, dp=True, ne=True):
+        self.sent = sent
         if cp:
             parser = CP(url='http://localhost:9000')
             self.cp = next(parser.raw_parse(sent.sentence))

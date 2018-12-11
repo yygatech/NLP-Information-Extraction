@@ -1,5 +1,4 @@
-if ("objects" != key):
-    print(key, "-", info[key])
+
 # import module
 from script.utils import filters as fr
 from script.utils import tree_utils as tu

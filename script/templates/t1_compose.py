@@ -29,11 +29,12 @@ sents = fr.getCandidateSentences(synwords, keyword, synset_str)
 print("number of selected sentences:", len(sents))
 
 # TEST: select samples for testing
-sample = 20
-if sample < len(sents):
+sample = 20 # len(sents)
+start = 1
+if sample > len(sents):
     sample = len(sents)
 
-sents = sents[:sample]
+sents = sents[start:sample+start]
 print("sample size:", len(sents))
 
 # parse into groves
@@ -126,3 +127,10 @@ for i, info in enumerate(info_batch):
     for j, key in enumerate(info):
         print(key, "-", info[key])
     print()
+datas = []
+for i, info in enumerate(info_batch):
+    data = []
+    for j, key in enumerate(info):
+        data.append(info[key])
+    datas.append(data)
+

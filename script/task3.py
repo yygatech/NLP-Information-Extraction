@@ -10,12 +10,8 @@
 # download directory: /usr/local/share/nltk_data
 # download what you will need
 
-from task2 import _load_corpus
-import task3_1
-import task3_3
-import task3_2
-import task3_4
-import task3_5
+from script.task2 import _load_corpus
+from script import task3_1, task3_2, task3_3, task3_4, task3_5
 
 import script.utils.pickle_utils as pu
 from script.classes.sentence import Sentence
@@ -23,6 +19,9 @@ from script.classes.sentence import Sentence
 ##################################
 # load corpus
 corpus = _load_corpus("../data/corpus.txt")
+
+test = _load_corpus("../data/test.txt")
+corpus = corpus
 
 ##################################
 ## 3.1
