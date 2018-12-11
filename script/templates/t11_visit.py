@@ -13,15 +13,18 @@ sys.modules['sentence'] = sentence
 
 ##################################
 keyword = "visit"
-synset_str = "visit.v.01"
+synset_str = "visit.v.01" # the definition which is what we want
 
 excludes = ['see']
 synwords = fs.getCandidateWords(synset_str, excludes)
+synwords.append("go to")
+
 print('synwords:', synwords)
 
 ##################################
 # Step 1: filter sentences by verb
 sents = fs._filter_by_verb(synwords)
+# sents = fs.getCandidateSentences(synwords, keyword, synset_str)
 print("number of filtered sentences:", len(sents))
 
 # pickle keyword sents if never pickled
@@ -85,14 +88,14 @@ from script.templates import entity
 size = 20 # len(sents)
 
 ### to Location
-# from script.templates import geo
-# tolocs = geo._toLocation(sents[:size], synwords)
-# print(tolocs)
+from script.templates import geo
+tolocs = geo._toLocation(sents[:size], synwords)
+print(tolocs)
 
 ### Time
 from script.templates import temporal
-times = temporal._extract_time(sents[len(sents)-10:len(sents)])
-print(times)
+# times = temporal._extract_time(sents[len(sents)-10:len(sents)])
+# print(times)
 
 
 
