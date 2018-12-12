@@ -20,7 +20,7 @@ from script.classes.sentence import Sentence
 # load corpus
 corpus = _load_corpus("../data/corpus.txt")
 
-test = _load_corpus("../data/test.txt")
+# test = _load_corpus("../data/test.txt")
 corpus = corpus
 
 ##################################
@@ -30,12 +30,12 @@ pu._set_sentences(sentences)
 pu._set_words_all(words_all)
 
 # TEST
-# print("sentences")
-# print(sentences[1:2])
+print("sentences")
+print(sentences[1:2])
 print("len(sentences)", len(sentences))
 
-# print("words_all")
-# print(words_all[1:2])
+print("words_all")
+print(words_all[1:2])
 
 ##################################
 ## 3.2
@@ -43,8 +43,8 @@ pos_tags_all = task3_3._pos_tag(words_all)
 pu._set_pos_tags_all(pos_tags_all)
 
 # TEST
-# print("pos_tags_all")
-# print(pos_tags_all[1:2])
+print("pos_tags_all")
+print(pos_tags_all[1:2])
 
 tags_all = task3_3._tag(pos_tags_all)
 pu._set_tags_all(tags_all)
@@ -66,8 +66,8 @@ lemmas_all = task3_2._lemmatize(words_all, wn_tags_all)
 pu._set_lemmas_all(lemmas_all)
 
 # TEST
-# print("lemmas_all")
-# print(lemmas_all[1:2])
+print("lemmas_all")
+print(lemmas_all[1:2])
 
 ##################################
 # wrap above all in sents
